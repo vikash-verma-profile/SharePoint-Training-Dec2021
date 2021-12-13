@@ -1,0 +1,50 @@
+<html>
+
+<body>
+    <input type="text" placeholder="Please enter student name" id="txtStudentName" />
+    <label id="errMsg"></label>
+    <br /><br />
+    <input type="button" value="Add Student" onclick="AddStudent()" /><br /><br />
+    <br /><br />
+    <table border="1">
+        <tr>
+            <td>Student Roll Number</td>
+            <td>Student Name</td>
+        </tr>
+        </tr>
+        <tbody id="tblContent">
+        </tbody>
+    </table>
+</body>
+
+</html>
+<script>
+    //array
+    const StudentList = [];
+    //created one function
+    function AddStudent() {
+        //get the data from text box
+        var StudentName = document.getElementById('txtStudentName').value;
+        var IsDuplicate = false;
+        //pushing this data to array
+        for (var i = 0; i < StudentList.length; i++) {
+            if (StudentList[i] == StudentName) {
+                document.getElementById('errMsg').innerHTML = "Please enter different name";
+                IsDuplicate = true;
+                break;
+            }
+        }
+        if (IsDuplicate == false) {
+            StudentList.push(StudentName);
+            var StudentNames = "";
+            //looping over an array
+            for (var i = 0; i < StudentList.length; i++) {
+                StudentNames = StudentNames + "<tr><td>" + (i + 1) + "</td><td>" + StudentList[i] + "</td></tr>";
+            }
+            //appending content to table
+            document.getElementById('tblContent').innerHTML = StudentNames;
+            // console.log(EmployeeList);
+        }
+
+    }
+</script>
