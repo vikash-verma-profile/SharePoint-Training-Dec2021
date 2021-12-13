@@ -1,0 +1,18 @@
+<html>
+<body>
+    <input type="text"  id="txtNumber1"/>
+    <input type="text"  id="txtNumber2"/>
+    <input type="button" value="Show" onclick="Add()"/><br/>
+    <label id="Message">
+    </label>
+</body>
+</html>
+<script>
+// function  <any-name> (){ }
+function Add(){
+    var Number1=Number(document.getElementById('txtNumber1').value);
+    var Number2=Number(document.getElementById('txtNumber2').value);
+    var Number3=Number1+Number2;
+    document.getElementById('Message').innerHTML=Number3;
+}
+</script>

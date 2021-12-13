@@ -1,0 +1,28 @@
+<html>
+
+<body>
+    <input type="text" value="5" id="txtNumber1"/>
+    <input type="text" value="5" id="txtNumber2"/>
+    <label id="Message">
+
+    </label>
+</body>
+
+</html>
+<script>
+//Create two text box and get there sum done into console
+//by default we get string type of value
+
+//Boolean can be 0,1 true false
+//string can be any in "" or ''
+//Number that is a numberic value
+
+var Number1=Number(document.getElementById('txtNumber1').value);
+var Number2=Number(document.getElementById('txtNumber2').value);
+var Number3=Number1+Number2;
+document.getElementById('Message').innerHTML=Number3;
+console.log(Number3);
+//console.log(Number1);
+//document.getElementById('Message').innerHTML=Number1+" is written by you into the textbox";
+
+</script>

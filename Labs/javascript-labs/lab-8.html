@@ -1,0 +1,31 @@
+<html>
+<body>
+    UserName
+    <input type="text"  id="txtUserName"/>
+    <label id="errMsgUserName">
+    </label>
+    <br/> <br/>
+    Password
+    <input type="text"  id="txtPassword"/>
+    <label id="errMsgPassword">
+    </label>
+    <br/> <br/>
+    <input type="button" value="Register" onclick="Register()"/><br/>
+    
+</body>
+</html>
+<script>
+// function  <any-name> (){ }
+function Register(){
+    var UserName=document.getElementById('txtUserName').value;
+    var Password=document.getElementById('txtPassword').value;
+   
+    if(UserName==""){
+        document.getElementById('errMsgUserName').innerHTML="Please enter your UseName";
+    }
+    else{
+        document.getElementById('errMsgUserName').innerHTML="";
+    }
+   
+}
+</script>

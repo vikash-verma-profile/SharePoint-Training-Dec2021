@@ -1,0 +1,70 @@
+<html>
+
+<body>
+    <input type="text" placeholder="Please enter employee name" id="txtEmployeeName" />
+    <input type="text" placeholder="Please enter employee department" id="txtEmployeeDept" />
+    <input type="button" value="Add Employee" onclick="AddEmployee()" /><br /><br />
+    <table border="1">
+        <tr>
+            <td>S.No</td>
+            <td>Dummy Data</td>
+        </tr>
+        </tr>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>Dummy 1</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>Dummy 2</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>Dummy 3</td>
+            </tr>
+
+        </tbody>
+
+    </table>
+
+    <br /><br />
+    <table border="1">
+        <tr>
+            <td>Employee Name</td>
+            <td>Employee Department</td>
+        </tr>
+        </tr>
+        <tbody id="tblContent">
+
+        </tbody>
+
+    </table>
+</body>
+
+</html>
+<script>
+    //array
+    const EmployeeList = [];
+    const Employeedepartmant = [];
+    //created one function
+    function AddEmployee() {
+        //get the data from text box
+        var EmployeeName = document.getElementById('txtEmployeeName').value;
+        var EmployeeDept = document.getElementById('txtEmployeeDept').value;
+        //pushing this data to array
+        EmployeeList.push(EmployeeName);
+        Employeedepartmant.push(EmployeeDept);
+       
+        var EmployeeNames = "";
+        //looping over an array
+        for (var i = 0; i < EmployeeList.length; i++) {
+            EmployeeNames = EmployeeNames + "<tr><td>" + EmployeeList[i] + "</td><td>" + Employeedepartmant[i] + "</td></tr>";
+        }
+
+        //appending content to table
+        document.getElementById('tblContent').innerHTML = EmployeeNames;
+
+       // console.log(EmployeeList);
+    }
+</script>
