@@ -1,0 +1,17 @@
+
+To start, create a class called PhotoBook with a attribute numPages of type number. It must also have a method GetNumberPages that will return the number of photo book pages.
+
+The default constructor will create an album with 16 pages. 
+There will be an additional function, with which we can specify the number of pages we want in the album.
+
+There is also a BigPhotoBook class whose constructor will create an album with 64 pages.
+
+
+Create a default photo book and show the number of pages
+Create a photo book with 24 pages and show the number of pages
+Create a large photo book and show the number of pages
+
+output 
+16
+24
+64
