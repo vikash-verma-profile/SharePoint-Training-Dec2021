@@ -22,6 +22,19 @@ export interface IHelloWorldWebPartProps {
 
 export default class HelloWorldWebPart extends BaseClientSideWebPart<IHelloWorldWebPartProps> {
 
+
+  protected onInit(): Promise<void> {
+      return new Promise<void>((resolve,_reject)=>
+      {
+        this.properties.productname="Mouse";
+        this.properties.productdescription="Mouse description";
+        this.properties.productcost=1000;
+        this.properties.quantity=200;
+        resolve(undefined);
+      });
+  }
+
+
   public render(): void {
     this.domElement.innerHTML = `
       <table>
