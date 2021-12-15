@@ -13,6 +13,8 @@ import {
   SPHttpClientResponse,
   ISPHttpClientOptions,
 } from "@microsoft/sp-http";
+import { ISoftwareListItem } from "./ISoftwareListItem";
+
 
 export interface ICrudWithListWebPartProps {
   description: string;
@@ -64,9 +66,12 @@ export default class CrudWithListWebPart extends BaseClientSideWebPart<ICrudWith
 
     </table>
     </div>
+    <div id="divstatus">
+    </div>
       `;
 
     this._bindEvents();
+    this.readAllItems();
   }
   private _bindEvents(): void {
     this.domElement
@@ -88,6 +93,29 @@ export default class CrudWithListWebPart extends BaseClientSideWebPart<ICrudWith
         this.deleteListItem();
       });
   }
+
+  private readListItem():void{
+    let id:string=document.getElementById('txtid')['value'];
+    this._getListItemById(id).then(listItem=>{
+      document.getElementById("txtSoftwareTitle")["value"]=listItem.Title;
+      document.getElementById("txtSoftwareVendor")["value"]=listItem.SoftwareVendor;
+      document.getElementById("txtSoftwareDescription")["value"]=listItem.SoftwareDescription;
+      document.getElementById("txtSoftwareName")["value"]=listItem.SoftwareName;
+    });
+  }
+
+  private _getListItemById(id:string):Promise<ISoftwareListItem>{
+    const url:string=this.context.pageContext.site.absoluteUrl+
+    "/_api/web/lists/getbytitle('SoftwareCatalog')/items?$filter=Id eq "+id;
+    return this.context.spHttpClient.get(url,SPHttpClient.configurations.v1).then((response:SPHttpClientResponse)=>{
+      return response.json();
+    }).then((listitems:any)=>{
+      const untypedItem:any=listitems.value[0];
+      const listItem:ISoftwareListItem=untypedItem as ISoftwareListItem;
+      return listItem;
+    }) as Promise<ISoftwareListItem>;
+  }
+
 
   private addListItem(): void {
     var softwaretitle = document.getElementById("txtSoftwareTitle")["value"];
@@ -121,9 +149,89 @@ export default class CrudWithListWebPart extends BaseClientSideWebPart<ICrudWith
         }
       });
   }
-  private readListItem(): void {}
-  private updateListItem(): void {}
-  private deleteListItem(): void {}
+  private readAllItems(): void {
+    this._getListItems().then(listitems=>{
+      let html:string='<table border=1 width=100% style="border-collapase:collapse;">'
+      html+='<th>Title</th><th>Vendor</th><th>Descrption</th><th>Name</th>'
+
+      listitems.forEach(listitems=>{
+       html+=`<tr>
+        <td>${listitems.Title}</td>
+        <td>${listitems.SoftwareName}</td>
+        <td>${listitems.SoftwareDescription}</td>
+        <td>${listitems.SoftwareVendor}</td>
+        </tr>`;
+      });
+      html+='</table>';
+      const listcontainer:Element=this.domElement.querySelector("#divstatus");
+      listcontainer.innerHTML=html;
+    })
+  }
+
+  private _getListItems():Promise<ISoftwareListItem[]>{
+    const url:string=this.context.pageContext.site.absoluteUrl+"/_api/web/lists/getbytitle('SoftwareCatalog')/items";
+    return this.context.spHttpClient.get(url,SPHttpClient.configurations.v1).then(response=>{
+      return response.json();
+    }).then(json=>{
+      return json.value;
+    }) as Promise<ISoftwareListItem[]>;
+  }
+  private updateListItem(): void {
+    var softwaretitle = document.getElementById("txtSoftwareTitle")["value"];
+    var softwarename = document.getElementById("txtSoftwareName")["value"];
+    var softwarevendor = document.getElementById("txtSoftwareVendor")["value"];
+    var softwaredescription = document.getElementById("txtSoftwareDescription")["value"];
+    var id:string = document.getElementById("txtid")["value"];
+
+    const url:string=this.context.pageContext.site.absoluteUrl+
+    "/_api/web/lists/getbytitle('SoftwareCatalog')/items("+id+")";
+
+    const itemBody: any = {
+      "Title": softwaretitle,
+      "SoftwareName": softwarename,
+      "SoftwareVendor": softwarevendor,
+      "SoftwareDescription": softwaredescription,
+    };
+
+    const headers:any={
+      "X-HTTP-Method":"MERGE",
+      "IF-MATCH":"*",
+    };
+    const sphttpClientOption: ISPHttpClientOptions = {
+      "headers":headers,
+      "body": JSON.stringify(itemBody),
+    };
+
+    this.context.spHttpClient.post(url,SPHttpClient.configurations.v1,sphttpClientOption).
+    then((response:SPHttpClientResponse)=>{
+      if(response.status===204){
+        alert("List Item Updated");
+      }
+      else{
+        alert("SOme error Occured");
+      }
+    });
+
+  }
+  private deleteListItem(): void {
+    var id:string = document.getElementById("txtid")["value"];
+    const url:string=this.context.pageContext.site.absoluteUrl+
+    "/_api/web/lists/getbytitle('SoftwareCatalog')/items("+id+")";
+    const headers:any={"X-HTTP-Method":"DELETE","IF-MATCH":"*"};
+    const cspHttpClientOptions:ISPHttpClientOptions={
+      "headers":headers
+    }
+    this.context.spHttpClient.post(url,SPHttpClient.configurations.v1,cspHttpClientOptions)
+    .then((response:SPHttpClientResponse)=>{
+      if(response.status===204){
+        alert("Item is deleted");
+      }
+      else{
+        alert("Some error Occured");
+      }
+    });
+  }
+
   protected get dataVersion(): Version {
     return Version.parse("1.0");
   }
