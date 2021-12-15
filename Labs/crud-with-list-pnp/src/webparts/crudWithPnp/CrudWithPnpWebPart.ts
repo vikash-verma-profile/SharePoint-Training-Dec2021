@@ -83,66 +83,28 @@ export default class CrudWithPnpWebPart extends BaseClientSideWebPart<ICrudWithP
   }
 
   private readListItem(): void {
-    let id: string = document.getElementById("txtid")["value"];
-    this._getListItemById(id).then((listItem) => {
-      document.getElementById("txtSoftwareTitle")["value"] = listItem.Title;
-      document.getElementById("txtSoftwareVendor")["value"] =
-        listItem.SoftwareVendor;
-      document.getElementById("txtSoftwareDescription")["value"] =
-        listItem.SoftwareDescription;
-      document.getElementById("txtSoftwareName")["value"] =
-        listItem.SoftwareName;
-    });
-  }
-
-  private _getListItemById(id: string): Promise<ISoftwareListItem> {
-    const url: string =
-      this.context.pageContext.site.absoluteUrl +
-      "/_api/web/lists/getbytitle('SoftwareCatalog')/items?$filter=Id eq " +
-      id;
-    return this.context.spHttpClient
-      .get(url, SPHttpClient.configurations.v1)
-      .then((response: SPHttpClientResponse) => {
-        return response.json();
-      })
-      .then((listitems: any) => {
-        const untypedItem: any = listitems.value[0];
-        const listItem: ISoftwareListItem = untypedItem as ISoftwareListItem;
-        return listItem;
-      }) as Promise<ISoftwareListItem>;
+    let id = document.getElementById("txtid")["value"];
+   pnp.sp.web.lists.getByTitle("SoftwareCatalog").items.getById(id).get().then((item:any)=>{
+    document.getElementById("txtSoftwareTitle")["value"] = item["Title"];
+    document.getElementById("txtSoftwareVendor")["value"] = item["SoftwareVendor"];
+    document.getElementById("txtSoftwareDescription")["value"] = item["SoftwareDescription"];
+    document.getElementById("txtSoftwareName")["value"] = item["SoftwareName"];
+   });
   }
 
   private addListItem(): void {
     var softwaretitle = document.getElementById("txtSoftwareTitle")["value"];
     var softwarename = document.getElementById("txtSoftwareName")["value"];
     var softwarevendor = document.getElementById("txtSoftwareVendor")["value"];
-    var softwaredescription = document.getElementById("txtSoftwareDescription")[
-      "value"
-    ];
-
-    const siteurl =
-      this.context.pageContext.site.absoluteUrl +
-      "/_api/web/lists/getbytitle('SoftwareCatalog')/items";
-
-    const itemBody: any = {
+    var softwaredescription = document.getElementById("txtSoftwareDescription")["value"];
+    pnp.sp.web.lists.getByTitle("SoftwareCatalog").items.add({
       Title: softwaretitle,
       SoftwareName: softwarename,
       SoftwareVendor: softwarevendor,
       SoftwareDescription: softwaredescription,
-    };
-    const sphttpClientOption: ISPHttpClientOptions = {
-      body: JSON.stringify(itemBody),
-    };
-
-    this.context.spHttpClient
-      .post(siteurl, SPHttpClient.configurations.v1, sphttpClientOption)
-      .then((response: SPHttpClientResponse) => {
-        if (response.status === 201) {
-          alert("success");
-        } else {
-          alert("some error occured");
-        }
-      });
+    }).then(r=>{
+      alert("Success");
+    });
   }
 
   private readAllItems(): void {
@@ -153,12 +115,12 @@ export default class CrudWithPnpWebPart extends BaseClientSideWebPart<ICrudWithP
       .getByTitle("SoftwareCatalog")
       .items.get()
       .then((items: any[]) => {
-        items.forEach((listitems) => {
+        items.forEach(function(item){
           html += `<tr>
-     <td>${listitems.Title}</td>
-     <td>${listitems.SoftwareName}</td>
-     <td>${listitems.SoftwareDescription}</td>
-     <td>${listitems.SoftwareVendor}</td>
+     <td>${item["Title"]}</td>
+     <td>${item["SoftwareName"]}</td>
+     <td>${item["SoftwareDescription"]}</td>
+     <td>${item["SoftwareVendor"]}</td>
      </tr>`;
         });
         html += "</table>";
@@ -167,81 +129,25 @@ export default class CrudWithPnpWebPart extends BaseClientSideWebPart<ICrudWithP
         listcontainer.innerHTML = html;
       });
   }
-
-  private _getListItems(): Promise<ISoftwareListItem[]> {
-    const url: string =
-      this.context.pageContext.site.absoluteUrl +
-      "/_api/web/lists/getbytitle('SoftwareCatalog')/items";
-    return this.context.spHttpClient
-      .get(url, SPHttpClient.configurations.v1)
-      .then((response) => {
-        return response.json();
-      })
-      .then((json) => {
-        return json.value;
-      }) as Promise<ISoftwareListItem[]>;
-  }
   private updateListItem(): void {
     var softwaretitle = document.getElementById("txtSoftwareTitle")["value"];
     var softwarename = document.getElementById("txtSoftwareName")["value"];
     var softwarevendor = document.getElementById("txtSoftwareVendor")["value"];
-    var softwaredescription = document.getElementById("txtSoftwareDescription")[
-      "value"
-    ];
-    var id: string = document.getElementById("txtid")["value"];
-
-    const url: string =
-      this.context.pageContext.site.absoluteUrl +
-      "/_api/web/lists/getbytitle('SoftwareCatalog')/items(" +
-      id +
-      ")";
-
-    const itemBody: any = {
+    var softwaredescription = document.getElementById("txtSoftwareDescription")["value"];
+    var id= document.getElementById("txtid")["value"];
+    pnp.sp.web.lists.getByTitle("SoftwareCatalog").items.getById(id).update({
       Title: softwaretitle,
       SoftwareName: softwarename,
       SoftwareVendor: softwarevendor,
       SoftwareDescription: softwaredescription,
-    };
-
-    const headers: any = {
-      "X-HTTP-Method": "MERGE",
-      "IF-MATCH": "*",
-    };
-    const sphttpClientOption: ISPHttpClientOptions = {
-      headers: headers,
-      body: JSON.stringify(itemBody),
-    };
-
-    this.context.spHttpClient
-      .post(url, SPHttpClient.configurations.v1, sphttpClientOption)
-      .then((response: SPHttpClientResponse) => {
-        if (response.status === 204) {
-          alert("List Item Updated");
-        } else {
-          alert("SOme error Occured");
-        }
-      });
+    }).then(r=>{
+      alert("Details Updated");
+    });
   }
   private deleteListItem(): void {
-    var id: string = document.getElementById("txtid")["value"];
-    const url: string =
-      this.context.pageContext.site.absoluteUrl +
-      "/_api/web/lists/getbytitle('SoftwareCatalog')/items(" +
-      id +
-      ")";
-    const headers: any = { "X-HTTP-Method": "DELETE", "IF-MATCH": "*" };
-    const cspHttpClientOptions: ISPHttpClientOptions = {
-      headers: headers,
-    };
-    this.context.spHttpClient
-      .post(url, SPHttpClient.configurations.v1, cspHttpClientOptions)
-      .then((response: SPHttpClientResponse) => {
-        if (response.status === 204) {
-          alert("Item is deleted");
-        } else {
-          alert("Some error Occured");
-        }
-      });
+    var id = document.getElementById("txtid")["value"];
+    pnp.sp.web.lists.getByTitle("SoftwareCatalog").items.getById(id).delete();
+    alert("list item is deleted");
   }
   protected get dataVersion(): Version {
     return Version.parse("1.0");
