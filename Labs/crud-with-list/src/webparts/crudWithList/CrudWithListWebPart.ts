@@ -8,6 +8,11 @@ import { escape } from "@microsoft/sp-lodash-subset";
 
 import styles from "./CrudWithListWebPart.module.scss";
 import * as strings from "CrudWithListWebPartStrings";
+import {
+  SPHttpClient,
+  SPHttpClientResponse,
+  ISPHttpClientOptions,
+} from "@microsoft/sp-http";
 
 export interface ICrudWithListWebPartProps {
   description: string;
@@ -61,38 +66,64 @@ export default class CrudWithListWebPart extends BaseClientSideWebPart<ICrudWith
     </div>
       `;
 
-
-      this._bindEvents();
-      
+    this._bindEvents();
   }
-  private _bindEvents():void{
-    this.domElement.querySelector('#btnSubmit').addEventListener('click',()=>{
-      this.addListItem();
-    });
-    this.domElement.querySelector('#btnRead').addEventListener('click',()=>{
+  private _bindEvents(): void {
+    this.domElement
+      .querySelector("#btnSubmit")
+      .addEventListener("click", () => {
+        this.addListItem();
+      });
+    this.domElement.querySelector("#btnRead").addEventListener("click", () => {
       this.readListItem();
     });
-    this.domElement.querySelector('#btnUpdate').addEventListener('click',()=>{
-      this.updateListItem();
-    });
-    this.domElement.querySelector('#btnDelete').addEventListener('click',()=>{
-      this.deleteListItem();
-    });
-
+    this.domElement
+      .querySelector("#btnUpdate")
+      .addEventListener("click", () => {
+        this.updateListItem();
+      });
+    this.domElement
+      .querySelector("#btnDelete")
+      .addEventListener("click", () => {
+        this.deleteListItem();
+      });
   }
 
-  private addListItem():void{
+  private addListItem(): void {
+    var softwaretitle = document.getElementById("txtSoftwareTitle")["value"];
+    var softwarename = document.getElementById("txtSoftwareName")["value"];
+    var softwarevendor = document.getElementById("txtSoftwareVendor")["value"];
+    var softwaredescription = document.getElementById("txtSoftwareDescription")[
+      "value"
+    ];
 
-  }
-  private readListItem():void{
+    const siteurl =
+      this.context.pageContext.site.absoluteUrl +
+      "/_api/web/lists/getbytitle('SoftwareCatalog')/items";
 
-  }
-  private updateListItem():void{
+    const itemBody: any = {
+      "Title": softwaretitle,
+      "SoftwareName": softwarename,
+      "SoftwareVendor": softwarevendor,
+      "SoftwareDescription": softwaredescription,
+    };
+    const sphttpClientOption: ISPHttpClientOptions = {
+      body: JSON.stringify(itemBody),
+    };
 
+    this.context.spHttpClient
+      .post(siteurl, SPHttpClient.configurations.v1, sphttpClientOption)
+      .then((response: SPHttpClientResponse) => {
+        if (response.status === 201) {
+          alert("success");
+        } else {
+          alert("some error occured");
+        }
+      });
   }
-  private deleteListItem():void{
-
-  }
+  private readListItem(): void {}
+  private updateListItem(): void {}
+  private deleteListItem(): void {}
   protected get dataVersion(): Version {
     return Version.parse("1.0");
   }
