@@ -60,8 +60,39 @@ export default class CrudWithListWebPart extends BaseClientSideWebPart<ICrudWith
     </table>
     </div>
       `;
+
+
+      this._bindEvents();
+      
+  }
+  private _bindEvents():void{
+    this.domElement.querySelector('#btnSubmit').addEventListener('click',()=>{
+      this.addListItem();
+    });
+    this.domElement.querySelector('#btnRead').addEventListener('click',()=>{
+      this.readListItem();
+    });
+    this.domElement.querySelector('#btnUpdate').addEventListener('click',()=>{
+      this.updateListItem();
+    });
+    this.domElement.querySelector('#btnDelete').addEventListener('click',()=>{
+      this.deleteListItem();
+    });
+
   }
 
+  private addListItem():void{
+
+  }
+  private readListItem():void{
+
+  }
+  private updateListItem():void{
+
+  }
+  private deleteListItem():void{
+
+  }
   protected get dataVersion(): Version {
     return Version.parse("1.0");
   }
