@@ -1,5 +1,5 @@
 {
-  "name": "test-customlibrary",
+  "name": "command-set-demo",
   "version": "0.0.1",
   "private": true,
   "main": "lib/index.js",
@@ -9,12 +9,11 @@
     "test": "gulp test"
   },
   "dependencies": {
+    "@microsoft/decorators": "1.13.1",
     "@microsoft/sp-core-library": "1.13.1",
-    "@microsoft/sp-property-pane": "1.13.1",
-    "@microsoft/sp-webpart-base": "1.13.1",
-    "@microsoft/sp-lodash-subset": "1.13.1",
-    "@microsoft/sp-office-ui-fabric-core": "1.13.1",
-    "custom-library":"0.0.1"
+    "@microsoft/sp-dialog": "1.13.1",
+    "@microsoft/sp-listview-extensibility": "1.13.1",
+    "sp-pnp-js": "^3.0.10"
   },
   "devDependencies": {
     "@microsoft/sp-build-web": "1.13.1",

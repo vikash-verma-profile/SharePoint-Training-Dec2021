@@ -1,5 +1,5 @@
 {
-  "name": "test-customlibrary",
+  "name": "field-customizer",
   "version": "0.0.1",
   "private": true,
   "main": "lib/index.js",
@@ -10,11 +10,8 @@
   },
   "dependencies": {
     "@microsoft/sp-core-library": "1.13.1",
-    "@microsoft/sp-property-pane": "1.13.1",
-    "@microsoft/sp-webpart-base": "1.13.1",
-    "@microsoft/sp-lodash-subset": "1.13.1",
-    "@microsoft/sp-office-ui-fabric-core": "1.13.1",
-    "custom-library":"0.0.1"
+    "@microsoft/decorators": "1.13.1",
+    "@microsoft/sp-listview-extensibility": "1.13.1"
   },
   "devDependencies": {
     "@microsoft/sp-build-web": "1.13.1",

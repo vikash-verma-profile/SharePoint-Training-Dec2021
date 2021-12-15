@@ -1,0 +1,29 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://dummy76.sharepoint.com/sites/vikash/SitePages/Vikash-Verma.aspx",
+      "customActions": {
+        "f88f6402-7e04-4a4f-a9ed-616eba2ac58e": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "testMessage": "Test message"
+          }
+        }
+      }
+    },
+    "applicationCustomizer": {
+      "pageUrl": "https://dummy76.sharepoint.com/sites/vikash/SitePages/Vikash-Verma.aspx",
+      "customActions": {
+        "f88f6402-7e04-4a4f-a9ed-616eba2ac58e": {
+          "location": "ClientSideExtension.ApplicationCustomizer",
+          "properties": {
+            "testMessage": "Vikash Test message"
+          }
+        }
+      }
+    }
+  }
+}

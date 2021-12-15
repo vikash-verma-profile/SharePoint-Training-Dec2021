@@ -1,0 +1,29 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://dummy76.sharepoint.com/sites/vikash/Lists/ProjectStatus/AllItems.aspx",
+      "fieldCustomizers": {
+        "Status": {
+          "id": "3e1f3f2c-34ad-4003-900e-e501ad35d511",
+          "properties": {
+            "sampleText": "Completed"
+          }
+        }
+      }
+    },
+    "fieldCustomizer": {
+      "pageUrl": "https://dummy76.sharepoint.com/sites/vikash/Lists/ProjectStatus/AllItems.aspx",
+      "fieldCustomizers": {
+        "Status": {
+          "id": "3e1f3f2c-34ad-4003-900e-e501ad35d511",
+          "properties": {
+            "sampleText": "Completed"
+          }
+        }
+      }
+    }
+  }
+}
