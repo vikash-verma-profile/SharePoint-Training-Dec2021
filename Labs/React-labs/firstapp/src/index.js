@@ -7,6 +7,7 @@ import AppClass from './AppClass';
 import Sample from './sample';
 import Counter from './counter';
 import FormSample from './formsample';
+import Sum from './sum';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,7 +15,8 @@ ReactDOM.render(
     <App />
     <Sample />
     <Counter /> */}
-    <FormSample/>
+    {/* <FormSample/> */}
+    <Sum />
    
   </React.StrictMode>,
   document.getElementById('root')
