@@ -8,6 +8,7 @@ import Sample from './sample';
 import Counter from './counter';
 import FormSample from './formsample';
 import Sum from './sum';
+import OddEven from './odd-even';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -16,7 +17,8 @@ ReactDOM.render(
     <Sample />
     <Counter /> */}
     {/* <FormSample/> */}
-    <Sum />
+    {/* <Sum /> */}
+    <OddEven />
    
   </React.StrictMode>,
   document.getElementById('root')
